@@ -1,9 +1,11 @@
 import pickle, os.path
 import re, collections
+from nltk.metrics import distance
 
 def words(text): return re.findall('[a-z]+', text.lower()) 
 
-def train(features):
+def train():
+    features=words(file('big.txt').read())
     if os.path.isfile('dictfile')==True:
         model=pickle.load(open('dictfile'))
     else:
@@ -15,7 +17,7 @@ def train(features):
     return model
 
 alphabet = 'abcdefghijklmnopqrstuvwxyz'
-NWORDS = train(words(file('big.txt').read()))
+NWORDS = train()
 
 def edits1(word):
     splits     = [(word[:i], word[i:]) for i in range(len(word) + 1)]
@@ -49,9 +51,24 @@ def setting():
         if w1 in x and w2 in x:
             print x
 
+def ranked_suggestions(w):
+    suggestions=known_editsn(w,2)
+    #primary and secondary candidates for correction
+    p_cand= []
+    s_cand= []
+    for s in suggestions:
+        d= distance.edit_distance(w,s)
+        if d==1:
+            p_cand.append(s)
+        elif d==2:
+            s_cand.append(s)
+    p_cand= sorted(p_cand, key=NWORDS.__getitem__)
+    s_cand= sorted(s_cand, key=NWORDS.__getitem__)
+    return (p_cand+s_cand)[:5]
+
 def driver():
-    print known_editsn("corect",2)
-    print edits1('acress')
-    print NWORDS['correct']
+    c=['belive','bouyant','comitte','distarct','extacy','failer','hellpp','gracefull','liason','ocassion','possable','thruout','volly','tatoos','respet']
+    for w in c:
+        print w, ranked_suggestions(w)
 
 driver()
