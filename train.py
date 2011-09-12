@@ -10,15 +10,15 @@ def train(tests):
 	#files = os.listdir(c_dir)
 	#print files
 	#for f in files:
-	c_dir = "/home/such/Documents/NLP/Programming_Assignment_resources/"
-	fpath = c_dir+'big.txt'
+	#c_dir = "/home/such/Documents/NLP/Programming_Assignment_resources/"
+	fpath = 'big.txt'
 	doc = open(fpath,'r')
 	words = re.findall('[a-z]+' , doc.read().lower())
 	
 	#define n-gram model
 	#corp = brown.words()
 	good_turing = lambda fdist,bins:GoodTuringProbDist(fdist,56707)
-	model = NgramModel(3,words,good_turing)
+	model = NgramModel(2,words,good_turing)
 	
 	
 	for s in tests:
