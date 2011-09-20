@@ -8,7 +8,7 @@ def find_contexts(c,text,model):
 	text = text.split('.')
 	text = [t for t in text if t != '']
 	text=(' ').join(text)
-	print text
+	#print text
 	try:
 		return model.prob(c,[text])
 	except TypeError:
